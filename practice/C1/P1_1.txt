@@ -1,2 +1,38 @@
-//sin wave function 1.o
+//sin wave function 1.0
 
+//output the sin wave from adc or(pwm to dac)
+
+void sinWave(int period,int maxValue)
+{
+    int t = 0;
+    while(1)
+    {
+       int adc = sin((t%period)/period*2*pi)*maxValue;
+       AdcOutput(adc);
+       t++;
+    }
+}
+
+//sin wave function 2.0
+static sinValue[10] = {-1,-0.9,0.8,-0.6,0,0,6,0.8,0.9,1};
+void sinWave(int period,int maxValue)
+{
+    int t = 0;
+    while(1)
+    {
+       t++;
+       AdcOutput(sinValue[t%7])*maxValue;
+    }
+}
+
+//sin wave function 2.1
+static sinValue[10] = {-1,0.8,-0.6,0,0,6,0.8,1};
+void sinWave(int period,int maxValue)
+{
+    int t = 0;
+    while(1)
+    {
+       t++;
+       AdcOutput(sinValue[t%5])*maxValue;
+    }
+}
