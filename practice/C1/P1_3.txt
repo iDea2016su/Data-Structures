@@ -160,3 +160,104 @@ Item::Item()
 Item::~Item()
 {
 }
+
+// second implecation
+// ConsoleApplication6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Str
+{
+public:
+	Str();
+	~Str();
+	int len;
+	char value[1000];
+	void operator=(string s);
+	bool operator==(Str s);
+	Str operator+(Str & s);
+	void Print(void);
+};
+int main()
+{
+	Str s1;
+	s1 = "111";
+	s1.Print();
+	Str s2;
+	s2 = "456";
+	s2.Print();
+	if (s1 == s2)
+	{
+		cout << "same" << endl;
+	}
+	else
+	{
+		cout << "not same " << endl;
+	}
+	Str s3;
+	s3 = (s1 + s2);  //原因是在调用完+重载后，然后调用=重载需要传入参数，但参数已经被释放，没有本地对象存储+重载返回的对象
+	s3.Print();
+	system("pause");
+	return 0;
+}
+
+Str::Str()
+{
+}
+
+Str::~Str()
+{
+}
+
+void Str::operator=(string  s)
+{
+	len = s.length();
+	for (int i = 0; i < len; i++)
+	{
+		value[i] = s[i];
+	}
+}
+
+
+bool Str::operator==(Str  s)
+{
+	if (len != s.len)
+		return 0;
+	for (int i = 0; i < len; i++)
+	{
+		if (value[i]!= s.value[i])
+			return 0;
+	}
+	return 1;
+}
+
+Str Str::operator+(Str &  s)
+{
+	Str * result = new Str();
+	result->len = len + s.len;
+	for (int i = 0; i < len; i++)
+	{
+		result->value[i] = value[i];
+	}
+	for (int i=len; i < result->len; i++)
+	{
+		result->value[i] = s.value[i-len];
+	}
+	return *result;
+}
+
+void Str::Print(void)
+{
+	for (int i = 0; i < len; i++)
+	{
+		cout << value[i];
+	}
+	cout << endl;
+}
+
+
