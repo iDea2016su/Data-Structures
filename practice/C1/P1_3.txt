@@ -1,0 +1,162 @@
+// ConsoleApplication6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+class Item
+{
+public:
+	Item();
+	~Item();
+	char value;
+	Item * next;
+	Item * before;
+};
+class Str
+{
+public:
+	Str();
+	~Str();
+	int len;
+	Item * head;
+	Item * end;
+	Str operator=(string s);
+	//Str operator=(Str s);
+	bool operator==(Str s);
+	Str operator+(Str & s);
+	void Print(void);
+};
+int main()
+{
+	Str s1;
+	s1 = "111";
+	s1.Print();
+	Str s2;
+	s2 = "456";
+	s2.Print();
+	if (s1 == s2)
+	{
+		cout << "same" << endl;
+	}
+	else
+	{
+		cout << "not same " << endl;
+	}
+	Str s3;
+	s3 = (s1 + s2);  //原因是在调用完+重载后，然后调用=重载需要传入参数，但参数已经被释放，没有本地对象存储+重载返回的对象
+	s3.Print();
+	system("pause");
+	return 0;
+}
+
+Str::Str()
+{
+}
+
+Str::~Str()
+{
+}
+
+Str Str::operator=(string  s)
+{
+	Item * tmp = new Item();
+	head = tmp;
+	end = tmp;
+	len = s.length();
+	for (int i = 0; i < len; i++)
+	{
+		tmp->value = s[i];
+		Item * ntmp = new Item();
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+	}
+	end = tmp->before;
+	return Str();
+}
+
+//Str Str::operator=(Str  s)
+//{
+//	Str * result = new Str();
+//	Item * tmp = new Item();
+//	result->head = tmp;
+//	Item * tmp1 = s.head;
+//	for (int i = 0; i < s.len; i++)
+//	{
+//		tmp->value = tmp1->value;
+//		Item * ntmp = new Item();
+//		tmp->next = ntmp;
+//		ntmp->before = tmp;
+//		tmp = tmp->next;
+//		tmp1 = tmp1->next;
+//	}
+//	result->end = tmp->before;
+//	return (*result);
+//}
+
+bool Str::operator==(Str  s)
+{
+	if (len != s.len)
+		return 0;
+	Item * tmp = s.head;
+	Item * tmp1 = head;
+	for (int i = 0; i < len; i++)
+	{
+		if (tmp->value != tmp1->value)
+			return 0;
+		tmp = tmp->next;
+		tmp1 = tmp1->next;
+	}
+	return 1;
+}
+
+Str Str::operator+(Str &  s)
+{
+	Item * tmp = new Item();
+	Str * result = new Str();
+	result->head = tmp;
+	Item * tmp1 = head;
+	result->len = len + s.len;
+	for (int i = 0; i < len; i++)
+	{
+		tmp->value = tmp1->value;
+		Item * ntmp = new Item();
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+		tmp1 = tmp1->next;
+	}
+	tmp1 = s.head;
+	for (int i = 0; i < s.len; i++)
+	{
+		tmp->value = tmp1->value;
+		Item * ntmp = new Item();
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+		tmp1 = tmp1->next;
+	}
+	return *result;
+}
+
+void Str::Print(void)
+{
+	Item * tmp = head;
+	for (int i = 0; i < len; i++)
+	{
+		cout << tmp->value;
+		tmp = tmp->next;
+	}
+	cout << endl;
+}
+
+Item::Item()
+{
+}
+
+Item::~Item()
+{
+}
