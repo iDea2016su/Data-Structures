@@ -1,0 +1,152 @@
+// ConsoleApplication6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+class Item
+{
+public:
+	Item();
+	~Item();
+	int value;
+	Item * next;
+	Item * before;
+};
+
+Item::Item()
+{
+}
+
+Item::~Item()
+{
+}
+class List
+{
+public:
+	List();
+	~List();
+	int len;
+	Item *head;
+	Item *end;
+	int GetLen();
+	void Insert(int i);
+	int  Find(int i);
+	void Clear(void);
+	void Print(void);
+
+};
+int main()
+{
+	List list;
+	list.Insert(2);
+	list.Insert(1);
+	list.Insert(3);
+	list.Insert(5);
+	list.Print();
+	if (list.Find(3)>0)
+	{
+		cout << "get 3" << endl;
+	}
+	else
+	{
+		cout << "no item" << endl;
+	}
+	system("pause");
+	return 1;
+}
+
+
+
+List::List()
+{
+	len = 0;
+	Item * tmp = new Item();
+	head = tmp;
+	Item * tmp1 = new Item();
+	end = tmp1;
+	head->next = end;
+	end->before = head;
+}
+
+List::~List()
+{
+}
+
+int List::GetLen()
+{
+	return len;
+}
+
+void List::Insert(int v)
+{
+
+		Item * tmp = head;
+		if (len==0)
+		{
+			Item * ntmp = new Item();
+			ntmp->value = v;
+			ntmp->before = tmp;
+			ntmp->next = end;
+			end->before = ntmp;
+			tmp->next = ntmp;
+			len++;
+			return;
+		}
+		for (int i = 0; i < len; i++)
+		{
+			tmp = tmp->next;
+			if ((v <= tmp->value))
+			{
+				Item * ntmp = new Item();
+				ntmp->value = v;
+				ntmp->before = tmp->before;
+				tmp->before->next = ntmp;
+				tmp->before = ntmp;
+				ntmp->next = tmp;
+				len++;
+				return;
+			}
+		}
+		Item * ntmp = new Item();
+		ntmp->value = v;
+		ntmp->before = end->before;
+		end->before->next = ntmp;
+		ntmp->next = end;
+		end->before = ntmp;
+		len++;
+		return;
+}
+
+int List::Find(int v)
+{
+	Item* tmp = head->next;
+	for (int i = 0; i < len; i++)
+	{
+		if (tmp->value == v)
+		{
+			return 1;
+		}
+		tmp = tmp->next;
+	}
+	return -1;
+}
+
+void List::Clear(void)
+{
+	len = 0;
+	free(head);
+	free(end);
+}
+
+void List::Print(void)
+{
+	Item * tmp = head->next;
+	for (int i = 0; i < len; i++)
+	{
+		cout << tmp->value << " ";
+		tmp = tmp->next;
+	}
+}
