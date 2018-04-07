@@ -1,0 +1,95 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Item
+{
+public:
+	Item();
+	~Item();
+	Item *next;
+	Item *before;
+	int value;
+};
+
+class List
+{
+public:
+	List();
+	~List();
+	Item* head;
+	Item* end;
+	int len;
+	void Insert();
+	void Sort();
+	Item GetItem(int i);
+	void Change(int i1,int i2);
+};
+
+Item::Item()
+{
+}
+
+Item::~Item()
+{
+}
+
+List::List()
+{
+}
+
+List::~List()
+{
+}
+
+void List::Insert()
+{
+}
+Item List::GetItem(int i)
+{
+	if (i > len)
+	{
+		return;
+	}
+	Item * tmp = head;
+	for (int j = 0; j < i; j++)
+	{
+		tmp = tmp->next;
+	}
+	return *tmp;
+}
+void List::Change(int i1, int i2)
+{
+	if (i1 > len||i2 > len)
+	{
+		return;
+	}
+	Item * tmp1 = head;
+	for (int j = 0; j < i1; j++)
+	{
+		tmp1 = tmp1->next;
+	}
+	Item * tmp2 = head;
+	for (int j = 0; j < i2; j++)
+	{
+		tmp2 = tmp2->next;
+	}
+	Item * tmp = new Item();
+	*tmp = *tmp1;
+	*tmp1 = *tmp2;
+	*tmp2 = *tmp;
+}
+void List::Sort()
+{
+	for (int i = 0; i < len; i++)
+		for (int j = i+1; j <len; j++)
+		{
+			Item * tmp = new Item();
+			if (GetItem(i + 1).value < GetItem(j + 1).value)
+			{
+				Change(i+1,j+1);
+			}
+	    }
+}
