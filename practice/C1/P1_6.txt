@@ -1,0 +1,149 @@
+// ConsoleApplication6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Item
+{
+public:
+	Item();
+	~Item();
+	Item * next;
+	Item * before;
+	int value;
+};
+
+
+
+class Clo
+{
+public:
+	Clo();
+	~Clo();
+	void operator=(string s);
+	void Print();
+	Item * head;
+	Item * end;
+	Clo * next;
+	Clo * before;
+	int len;
+};
+
+class Array
+{
+public:
+	Array();
+	~Array();
+	int len;
+	Clo *head;
+	Clo *end;
+	void operator=(string s[]);
+	void Print(void);
+};
+
+int main()
+{
+	Array myArray;
+	string sary[] = { "1233","456","789" };
+	myArray = sary;
+	myArray.Print();
+	system("pause");
+    return 0;
+}
+
+Item::Item()
+{
+}
+
+Item::~Item()
+{
+}
+Clo::Clo()
+{
+}
+Clo::~Clo()
+{
+
+}
+
+void Clo::operator=(string  s)
+{
+	len = s.length();
+	Item * tmp = new Item();
+	this->head = tmp;
+	for (int i = 0; i < len; i++)
+	{
+		tmp->value = s[i] - '0';
+		Item * ntmp = new Item();
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+	}
+	this->end = tmp->before;
+}
+
+
+
+void Clo::Print()
+{
+	Item * tmp = this->head;
+	for (int i = 0; i < this->len; i++)
+	{
+		cout << tmp->value;
+		tmp = tmp->next;
+	}
+	cout << endl;
+}
+
+Array::Array()
+{
+}
+
+Array::~Array()
+{
+}
+
+void Array::operator=(string s[])
+{
+	string *ps = s;
+	int pi = 0;
+	while (1)
+	{
+		int i = (ps+pi)->length();
+		if (i>0)
+		{
+			len++;
+			pi++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	Clo *tmp = new Clo();
+	this->head = tmp;
+	for (int i = 0; i < len; i++)
+	{
+		*tmp = *(s+i);
+		Clo * ntmp = new Clo();
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+	}
+	this->end = tmp->before;
+}
+
+
+void Array::Print(void)
+{
+	Clo * tmp = this->head;
+	for (int i = 0; i < this->len; i++)
+	{
+		tmp->Print();
+		tmp = tmp->next;
+	}
+}
