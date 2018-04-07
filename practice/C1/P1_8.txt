@@ -29,6 +29,9 @@ public:
 
 Item::Item()
 {
+   value1 = -1;
+   value2 = -1;
+   value3 = -1;
 }
 
 Item::~Item()
