@@ -147,3 +147,127 @@ void Array::Print(void)
 		tmp = tmp->next;
 	}
 }
+
+
+// ConsoleApplication6.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+typedef struct ITEM
+{
+	int x;
+	int y;
+	int value;
+}Item;
+class Array
+{
+public:
+	Array();
+	~Array();
+	int xlen;
+	int ylen;
+	int num;
+	Item item[1000];
+	void operator=(string s[]);
+	void Print();
+};
+int main()
+{
+
+	Array myArray;
+	string ary[] = { "1204","0456","7890" };
+	myArray = ary;
+	myArray.Print();
+	system("pause");
+    return 0;
+}
+
+Array::Array()
+{
+	ylen = 0;
+	xlen = 0;
+	num = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		item[i].x = 0;
+		item[i].y = 0;
+		item[i].value = 0;
+	}
+}
+
+Array::~Array()
+{
+}
+
+void Array::operator=(string s[])
+{
+	string *ps = s;
+	int pi = 0;
+	while (1)
+	{
+		int i = (ps + pi)->length();
+		if (i>0)
+		{
+			ylen++;
+			pi++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	int position = 0;
+	for (int i = 0; i < ylen; i++)
+	{
+		int l = (*(s + i)).length();
+		for (int j = 0; j < l; j++)
+		{
+			if (((*(s + i))[j]>'0')&&((*(s + i))[j]<='9'))
+			{
+				item[position].x = j;
+				item[position].y = i;
+				item[position].value = (*(s + i))[j]-'0';
+				position++;
+				
+			}
+			num++;
+		}
+	}
+}
+
+void Array::Print()
+{
+	int p = 0;
+	int t = 0;
+	for (int i = 0; i < ylen; i++)
+	{
+		t = 0;
+		while (1)
+		{
+			if (item[p].y == i)
+			{
+				if (item[p].x == t)
+				{
+					cout << item[p].value;
+					p++;
+				}
+				else
+				{
+					cout << "0";
+				}
+				t++;
+			}
+			else
+			{
+				break;
+			}
+
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
