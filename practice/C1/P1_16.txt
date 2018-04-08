@@ -46,3 +46,48 @@ Line::Line(Point&p1,Point & p2)
 Line::~Line()
 {
 }
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Line 
+{
+public:
+  Line();
+  ~Line();
+};
+
+class Point
+{
+public:
+  Point(Line & l);
+  ~Point();
+private:
+  int x;
+  int y;
+};
+
+
+
+int main()
+{
+   Line l;
+   Point p1(l),p2(l);
+   return 0;
+}
+Point::Point(Line &l)
+{
+}
+
+Point::~Point()
+{
+}
+
+Line::Line()
+{
+}
+Line::~Line()
+{
+}
