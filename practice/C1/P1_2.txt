@@ -1,0 +1,375 @@
+// ConsoleApplication5.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Item
+{
+public:
+	Item();
+	~Item();
+	Item * next;
+	Item * before;
+	int valve;
+};
+
+Item::Item()
+{
+
+}
+Item::~Item()
+{
+
+}
+
+class Int
+{
+public:
+	Item * head;
+	Item * end;
+	Int * next;
+	Int * before;
+	int len;
+	Int operator=(string str);
+	Int operator+(Int& i1);
+	Int operator*(Int& i1);
+	Int operator^(Int& i1);
+	bool operator==(Int& i1);
+	void Print(void);
+};
+class IntMul
+{
+public:
+	Int * head;
+	Int * end;
+};
+void copy(Int &i1,Int & i2);
+int main()
+{
+	Int myInt1;
+	myInt1 = "12";
+	myInt1.Print();
+	Int myInt2;
+	myInt2 = "2";
+	myInt2.Print();
+	Int myInt3;
+	myInt3 = myInt1 ^ myInt2;
+	myInt3.Print();
+	system("pause");
+	return 0;
+}
+
+Int Int::operator=(string str)
+{
+	len = str.length();
+	Item * tmp = new Item();
+	head = tmp;
+	end = tmp;
+	for (int i = 0; i < len; i++)
+	{
+		if ((str[i] >= '0') && (str[i] <= '9'))
+		{
+
+			tmp->valve = str[i] - '0';
+			Item *tmpNext = new Item();
+			tmp->next = tmpNext;
+			tmpNext->before = tmp;
+			tmp = tmp->next;
+		}
+		else
+		{
+			cout << "Invalid numbers" << endl;
+			while (1);
+		}
+	}
+	end = tmp->before;
+	return Int();
+}
+bool Int::operator==(Int& i1)
+{
+	int l = i1.len;
+	Item * tmp;
+	Item * tmp1;
+	tmp = this->head;
+	tmp1 = i1.head;
+	if (l == this->len)
+	{
+		for (int i = 0; i < l; i++)
+		{
+			int t1, t2;
+			t1 = tmp->valve;
+			t2 = tmp1->valve;
+			if (t1 == t2)
+			{
+				tmp = tmp->next;
+				tmp1 = tmp1->next;
+			}
+			else
+			{
+				return 0;
+			}
+
+		}
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+
+}
+Int Int::operator+(Int & i1)
+{
+
+	Item * tmp = new Item();
+	Int * result = new Int();
+	result->end = tmp;
+	if (i1.len > len)
+	{
+		result->len = i1.len;
+		Item * tmp1 = i1.end;
+		Item * tmpSelf = end;
+		Item * sumTmp;
+		for (int i = 0; i < len; i++)
+		{
+			tmp->valve = tmp1->valve + tmpSelf->valve;
+			if (tmp->valve > 9)
+			{
+				{
+					tmp->valve = (tmp->valve) % 10;
+					tmp1->before->valve++;
+				}
+			}
+			sumTmp = new Item();
+			tmp->before = sumTmp;
+			sumTmp->next = tmp;
+			tmp = tmp->before;
+			tmpSelf = tmpSelf->before;
+			tmp1 = tmp1->before;
+		}
+		for (int i = 0; i<i1.len - len; i++)
+		{
+			if (tmp1 != NULL)
+			{
+				tmp->valve += tmp1->valve;
+			}
+			if (tmp->valve > 9)
+			{
+				tmp->valve = tmp->valve % 10;
+				sumTmp = new Item();
+				tmp->before = sumTmp;
+				sumTmp->next = tmp;
+				tmp->before->valve++;
+				tmp = tmp->before;
+				tmp1 = tmp1->before;
+				if (i == i1.len - len - 1)
+				{
+					i--;
+					result->len++;
+				}
+			}
+			else
+			{
+				sumTmp = new Item();
+				tmp->before = sumTmp;
+				sumTmp->next = tmp;
+				tmp = tmp->before;
+				if (tmp1 != NULL)
+				{
+					tmp1 = tmp1->before;
+				}
+			}
+		}
+		result->head = tmp->next;
+	}
+	else if (i1.len < len)
+	{
+		result->len = len;
+		Item * tmp1 = i1.end;
+		Item * tmpSelf = end;
+		Item * sumTmp;
+		for (int i = 0; i < i1.len; i++)
+		{
+			tmp->valve = tmp1->valve + tmpSelf->valve;
+			if (tmp->valve > 9)
+			{
+				{
+					tmp->valve = (tmp->valve) % 10;
+					tmpSelf->before->valve++;
+				}
+			}
+			sumTmp = new Item();
+			tmp->before = sumTmp;
+			sumTmp->next = tmp;
+			tmp = tmp->before;
+			tmpSelf = tmpSelf->before;
+			tmp1 = tmp1->before;
+		}
+		for (int i = 0; i<len - i1.len; i++)
+		{
+			if (tmpSelf != NULL)
+			{
+				tmp->valve += tmpSelf->valve;
+			}
+			if (tmp->valve > 9)
+			{
+				tmp->valve = tmp->valve % 10;
+				sumTmp = new Item();
+				tmp->before = sumTmp;
+				sumTmp->next = tmp;
+				tmp->before->valve++;
+				tmp = tmp->before;
+				tmpSelf = tmpSelf->before;
+				if (i == i1.len - len - 1)
+				{
+					i--;
+					result->len++;
+				}
+			}
+			else
+			{
+				sumTmp = new Item();
+				tmp->before = sumTmp;
+				sumTmp->next = tmp;
+				tmp = tmp->before;
+				if (tmpSelf != NULL)
+				{
+					tmpSelf = tmpSelf->before;
+				}
+			}
+		}
+		result->head = tmp->next;
+	}
+	else
+	{
+		result->len = i1.len;
+		Item * tmp1 = i1.end;
+		Item * tmpSelf = end;
+		Item * sumTmp;
+		for (int i = 0; i < len; i++)
+		{
+			tmp->valve = tmp1->valve + tmpSelf->valve;
+			if (tmp->valve > 9)
+			{
+
+				tmp->valve = (tmp->valve) % 10;
+				if (i != len - 1)
+				{
+					tmp1->before->valve++;
+				}
+				else
+				{
+					sumTmp = new Item();
+					tmp->before = sumTmp;
+					sumTmp->next = tmp;
+					tmp->before->valve++;
+					tmp = tmp->before;
+					result->len++;
+				}
+
+			}
+			sumTmp = new Item();
+			tmp->before = sumTmp;
+			sumTmp->next = tmp;
+			tmp = tmp->before;
+			if (i != len - 1)
+			{
+
+				tmpSelf = tmpSelf->before;
+				tmp1 = tmp1->before;
+			}
+
+		}
+		result->head = tmp->next;
+	}
+	return *result;
+}
+Int Int::operator*(Int & i1)
+{
+	Int * tmp = new Int();
+	Item * tmp1 = i1.end;
+	IntMul * mulsum = new IntMul();
+	mulsum->head = tmp;
+	int j = 0;
+	while (1)
+	{
+		if (tmp1 == NULL)
+		{
+			break;
+		}
+		for (int i = 0; i < tmp1->valve; i++)
+		{
+			(*tmp) = *this + (*tmp);
+		}
+		for (int i = 0; i < j; i++)
+		{
+			Item * ztmp = new Item();
+			tmp->len++;
+			ztmp->valve = 0;
+			tmp->end->next = ztmp;
+			ztmp->before = tmp->end;
+			tmp->end = tmp->end->next;
+		}
+		tmp1 = tmp1->before;
+		j++;
+		Int * restmp = new Int();
+		tmp->next = restmp;
+		restmp->before = tmp;
+		tmp = tmp->next;
+	}
+	Int * result = new Int();
+	Int *resmul1 = mulsum->head;
+	for (int i = 0; i < j; i++)
+	{
+		*result = *resmul1 + *result;
+		resmul1 = resmul1->next;
+	}
+	return *result;
+}
+Int Int::operator^(Int & i1)
+{
+	Int  result;
+	result = "1";
+	Int add;
+	add = "1";
+	Int  start;
+	for (start = "0"; !(start == i1); start = start + add)
+	{
+		Int tmp;
+		tmp = result* (*this);   //this的顺序变化导致死机
+		copy(result,tmp);	
+	}
+	return result;
+}
+void Int::Print(void)
+{
+	Item * tmp;
+	tmp = head;
+	for (int i = len; i >0; i--)
+	{
+		cout << tmp->valve;
+		tmp = tmp->next;
+	}
+	cout << endl;
+}
+
+void copy(Int & i1, Int & i2)
+{
+	i1.before = i2.before;
+	i1.len = i2.len;
+	i1.end = i2.end;
+	i1.next = i2.next;
+	i1.head = i2.head;
+	Item *tmp1 = i1.head;
+	Item *tmp2 = i2.head;
+	for (int i=0;i<i1.len;i++)
+	{
+		tmp1->valve = tmp2->valve;
+		tmp1 = tmp1->next;
+		tmp2 = tmp2->next;
+	}
+}

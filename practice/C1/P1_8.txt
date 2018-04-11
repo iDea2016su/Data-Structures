@@ -1,0 +1,61 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Item
+{
+public:
+	Item();
+	~Item();
+	Item *next;
+	Item *before;
+	int value1;
+	int value2;
+	int value3;
+};
+
+class List
+{
+public:
+	List();
+	~List();
+	Item* head;
+	Item* end;
+	int len;
+	Item Find(Item &item);
+};
+
+Item::Item()
+{
+   value1 = -1;
+   value2 = -1;
+   value3 = -1;
+}
+
+Item::~Item()
+{
+}
+
+List::List()
+{
+}
+
+List::~List()
+{
+}
+
+Item List::Find(Item & item)
+{
+	Item * tmp = head;
+	for (int i = 0; i < len; i++)
+	{
+		tmp = tmp->next;
+		if ((tmp->value1 == item.value1) || (tmp->value2 == item.value2) || (tmp->value3 == item.value3))
+		{
+			return *tmp;
+		}
+	}
+	return;
+}
