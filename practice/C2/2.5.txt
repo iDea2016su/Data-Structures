@@ -1,0 +1,51 @@
+#include <iostream>
+using namespace std;
+
+class Item
+{
+public:
+	Item();
+    ~Item();
+    Item * next;
+    Item * before;
+    int value;	
+};
+class Set
+{
+public: 
+   Set();
+   ~Set();
+   void Add(int i);
+   int Find(int i);
+   int GetSize(void);
+private:
+	int size;
+	Item * head;
+	Item * end;
+	
+};
+int main()
+{
+	cout<<"zzwq"<<endl;
+}
+Item::Item()
+{
+}
+Item::~Item()
+{
+}
+Set::Set()
+{
+}
+Set::~Set()
+{
+}
+void Set::Add(int i)
+{
+}
+int Set::Find(int i)
+{
+}
+int Set::GetSize(void)
+{
+}
