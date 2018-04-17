@@ -1,0 +1,188 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+class Item
+{
+public:
+	Item();
+	~Item();
+	Item * before;
+	int size;
+	Item * next;
+};
+class Pole
+{
+public:
+	Pole(string pname);
+	~Pole();
+	void operator=(string s);
+	void Print();
+	int GetItem();
+	void PutItem(int psize);
+  bool FindItem(int n);
+	Item *head;
+	Item *end;
+	int number;
+	string name;
+};
+int times = 0;
+void move(Pole &p1,Pole &p2)
+{
+  times++;
+  int tmp = p1.GetItem();
+  if(tmp<=0)
+  {
+    cout<<"the pole is empty"<<endl;
+    return ;
+  }
+  p2.PutItem(tmp);
+  cout<< "pad size is: "<<tmp<<endl;
+  cout<<p1.name<<" : ";
+  p1.Print();
+  cout<<p2.name<<" : ";
+  p2.Print();
+  cout<<endl;
+}
+void TOH(int n,Pole &start,Pole &gole,Pole &temp)
+{
+	if(n==0) return;
+	TOH(n-1,start,temp,gole);
+	move(start,gole);
+	TOH(n-1,temp,gole,start);
+}
+
+int main()
+{
+  cout<<"hello"<<endl;
+  Pole p1("start");
+  Pole p2("temp");
+  Pole p3("gole");
+  p1 = "123";
+  
+  cout<<p1.name<<":";
+  p1.Print();
+  cout<<p2.name<<":";
+  p2.Print();
+  cout<<p3.name<<":";
+  p3.Print();
+  TOH(3,p1,p3,p2);
+  cout<<"cost "<<times<<"tiimes"<<endl;
+  cout<<p1.name<<":";
+  p1.Print();
+  cout<<p2.name<<":";
+  p2.Print();
+  cout<<p3.name<<":";
+  p3.Print();
+}
+
+Item::Item()
+{
+  before = NULL;
+  size =0 ;
+  next = NULL;
+}
+Item::~Item()
+{
+	size = 0;
+}
+Pole::Pole(string pname)
+{
+	number = 0;
+	Item * tmp1 = new Item();
+	Item * tmp2 = new Item();
+	head = tmp1;
+	end = tmp2;
+	head->next = end;
+	end->before = head;
+	name = pname;
+}
+Pole::~Pole()
+{
+}
+void Pole::operator=(string s)
+{
+	Item * tmp = new Item();
+	head = tmp;
+	number = s.length();
+	for(int i=0;i<number;i++)
+	{
+		Item * ntmp = new Item();
+		ntmp->size = s[i]-'0';
+		tmp->next = ntmp;
+		ntmp->before = tmp;
+		tmp = tmp->next;
+	}
+	Item * ntmp = new Item();
+	tmp->next = ntmp;
+	ntmp->before = tmp;
+	end = ntmp;
+}
+void Pole::Print()
+{
+    Item * tmp;
+    tmp = end;
+	for(int i=number;i>0;i--)
+	{
+		tmp = tmp->before;
+		cout<<" "<<tmp->size;
+	}
+	cout<<endl;
+}
+
+int Pole::GetItem()
+{
+  if(number == 0)
+  {
+     cout<<"Ploe is empty"<<endl;
+     return 0;
+  }
+  int result = head->next->size;
+  head = head->next;
+  number--;
+  return result;
+  
+}
+void Pole::PutItem(int ps)
+{
+  Item * tmp = new Item();
+  if(number==0)
+  {
+    number++;
+    tmp->size = ps;
+    head->next->before = tmp;
+    tmp->next = head->next;
+    head->next = tmp;
+    tmp->before = head;
+    return;
+  }
+  if(ps>head->next->size)
+  {
+  	cout<<"the pad is too big"<<endl;
+  	return;
+  }
+  number++;
+  tmp->size = ps;
+  head->next->before = tmp;
+  tmp->next = head->next;
+  head->next = tmp;
+  tmp->before = head;
+  return;
+}
+bool Pole::FindItem(int n)
+{
+  if(number==0)
+  {
+    return 0;
+  }
+  Item * tmp = head;
+  for(int i=0;i<number;i++)
+  {
+  	tmp = tmp->next;
+  	if(tmp->size==n)
+  	{
+  		return 1;
+  	}
+  }
+	return 0;
+}
