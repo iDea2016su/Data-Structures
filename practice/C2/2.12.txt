@@ -29,6 +29,11 @@ public:
 void move(Pole &p1,Pole &p2)
 {
   int tmp = p1.GetItem();
+  if(tmp<=0)
+  {
+    cout<<"the pole is empty"<<endl;
+    return ;
+  }
   p2.PutItem(tmp);
   cout<< "pad size is: "<<tmp<<endl;
   cout<<p1.name<<" : ";
@@ -46,9 +51,13 @@ void TOH(int n,Pole &start,Pole &gole,Pole &temp)
 }
 void AOH(int n,Pole &p1,Pole &p2,Pole &p3)
 {
-   Pole* pn;
-   Pole* pn1;
-   Pole* onpnn1;
+   Pole* pn = NULL;
+   Pole* pn1 = NULL;
+   Pole* onpnn1 = NULL;
+   if(n==1)
+   { 
+     return;
+   }
    if(p1.FindItem(n))
    {
       pn = &p1;
@@ -60,6 +69,10 @@ void AOH(int n,Pole &p1,Pole &p2,Pole &p3)
    else if(p3.FindItem(n))
    {
       pn = &p3;
+   }
+   else
+   {
+   	  cout<<"cant find item n"<<n<<endl;
    }
    if(p1.FindItem(n-1))
    {
@@ -73,26 +86,29 @@ void AOH(int n,Pole &p1,Pole &p2,Pole &p3)
    {
       pn1 = &p3;
    }
+   else
+   {
+   		cout<<"cant find item n-1"<<n-1<<endl;
+   }
     if((p1.FindItem(n)==0)&&(p1.FindItem(n-1)==0))
    {
       onpnn1 = &p1;
    }
-   else if((p1.FindItem(n)==0)&&(p1.FindItem(n-1)==0))
+   else if((p2.FindItem(n)==0)&&(p2.FindItem(n-1)==0))
    {
       onpnn1 = &p2;
    }
-   else if((p1.FindItem(n)==0)&&(p1.FindItem(n-1)==0))
+   else if((p3.FindItem(n)==0)&&(p3.FindItem(n-1)==0))
    {
       onpnn1 = &p3;
+   }		
+   else 
+   {
+     cout<<"cant find the item no n and n-1"<<"n :"<<n<<endl;
    }
    Pole & pp1 = *pn1;
    Pole & pp2 = *pn;
    Pole & pp3 = *onpnn1;
-   if(n==2)
-   { 
-     move(pp1,pp2);
-     return;
-   }
    AOH(n-1,p1,p2,p3);
    TOH(n-1,pp1,pp2,pp3);
 }
@@ -102,9 +118,9 @@ int main()
   Pole p1("start");
   Pole p2("temp");
   Pole p3("gole");
-  p1 = "1";
-  p2 = "247";
-  p3 = "356";
+  p1 = "14";
+  p2 = "25";
+  p3 = "3";
   
   cout<<p1.name<<":";
   p1.Print();
@@ -112,7 +128,7 @@ int main()
   p2.Print();
   cout<<p3.name<<":";
   p3.Print();
-  AOH(7,p1,p3,p2);
+  AOH(5,p1,p3,p2);
   cout<<p1.name<<":";
   p1.Print();
   cout<<p2.name<<":";
