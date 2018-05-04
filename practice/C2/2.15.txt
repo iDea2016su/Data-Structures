@@ -1,0 +1,64 @@
+#include "stdio.h"
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+void insert(int *arr,int *narr,int n,int p,int v)
+{
+  for(int i=0,j=0;j<n;j++)
+  {
+    if(p==j)
+    {
+      narr[j] = v;
+    }
+    else
+    {
+      narr[j] = arr[i++];
+    }
+  }
+}
+int fact(int n)
+{
+  int result =1;
+  for(int i=1;i<=n;i++)
+  {
+    result *= i;   
+  }
+  return result;
+}
+
+int ** F(int A[],int n)
+{
+  if(n==1)
+  {
+    int ** p = (int**)malloc(sizeof(int*)*1);
+    *(p) = (int*)malloc(sizeof(int)*1);//开辟列  
+    p[0][0] = A[0];
+    return p;
+  }
+  int ** t = F(A,n-1);
+  int ** nt = (int**)malloc(sizeof(int*)*fact(n)); //开辟行
+  for(int i = 0; i < fact(n); i++)  
+  {  
+      *(nt+i) = (int*)malloc(sizeof(int)*n);//开辟列  
+  }
+  for(int i=0;i<fact(n);i++)
+  {
+    insert(*(t+i%(n-1)),*(nt+i),n,i%n,A[n-1]);
+  }
+  return nt;
+}
+int main()
+{
+   int A[3] = {1,2,3};
+   int ** B = F(A,3);
+   cout<<"ok"<<endl;
+   for(int i=0;i<fact(3);i++)
+   {
+     for(int j=0;j<3;j++)
+     {
+       cout<<B[i][j];
+     }
+     cout<<endl;
+   }
+}
