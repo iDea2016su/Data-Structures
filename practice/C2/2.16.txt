@@ -1,0 +1,84 @@
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+
+void copy(int *res,int *para)
+{
+   int i=0;
+   while(1)
+   {
+     res[i] = para[i];
+     if(para[i]<=0)
+     break;
+     i++;
+   }
+   
+}
+
+void add(int *res,int v)
+{
+  int i=0;
+  while(1)
+  {
+    if(res[i]<=0)
+    break;
+    i++;
+  }
+  res[i] = v;
+  res[i+1] = 0;
+}
+int fact(int n)
+{
+  int result = 1;
+  for(int i=0;i<n;i++)
+  {
+    result *= 2;
+  }
+  return result -1;
+}
+int ** F(int n)
+{
+  if(n==1)
+  {
+    int ** p = (int**)malloc(sizeof(int *)*1);
+    *(p) = (int*)malloc(sizeof(int)*2);
+    p[0][0] = 1;
+    p[0][1] = -1;
+    return p;
+  }
+  int ** t = F(n-1);
+  int ** nt = (int **)malloc(sizeof(int*)*fact(n));
+  for(int i=0;i<fact(n);i++)
+  {
+    *(nt+i) = (int *)malloc(sizeof(int)*(n+1));
+  }
+  for(int i=0;i<fact(n-1);i++)
+  {
+    copy(*(nt+i),*(t+i));
+  }
+  for(int i=0;i<fact(n-1);i++)
+  {
+    copy(*(nt+i+fact(n-1)),*(t+i));
+    add(*(nt+i+fact(n-1)),n);
+  }
+    add(*(nt+fact(n)-1),n);
+  free(t);
+  return nt;
+}
+
+int main(void)
+{
+  int ** res = F(3);
+  for(int i=0;i<7;i++)
+  {
+    int j=0;
+    while(1)
+    {
+      cout<<res[i][j]<<",";
+      j++;
+      if(res[i][j]<=0)
+      break;
+    }
+    cout<<endl;
+  }
+}
