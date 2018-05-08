@@ -1,0 +1,38 @@
+// frist sulotion
+
+#include <iostream>
+using namespace std;
+
+int LCF(int n,int m)
+{
+  int result;
+  if(n<m)
+  {
+    int tmp = n;
+    n = m;
+    m = tmp;
+  }
+  while(1)
+  {
+    if(n%m==0)
+    {
+      result = m;
+      break;
+    }
+    else
+    {
+      int tmp = n;
+      n = m;
+      m = tmp%m;
+    }
+  }
+  return result;  
+}
+
+int main()
+{
+  int l = LCF(130,25);
+  cout<<l<<endl;
+}
+
+//second sulation
