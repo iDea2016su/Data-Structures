@@ -36,3 +36,23 @@ int main()
 }
 
 //second sulation
+#include <iostream>
+using namespace std;
+
+int LCF(int n,int m)
+{
+  if(n%m==0)
+  {
+    return m;
+  }
+  int tmp = n;
+  n = m;
+  m = tmp%m;
+  LCF(n,m);
+}
+
+int main()
+{
+  int l = LCF(130,25);
+  cout<<l<<endl;
+}
